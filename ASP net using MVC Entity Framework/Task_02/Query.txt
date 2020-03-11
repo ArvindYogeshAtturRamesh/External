@@ -1,0 +1,76 @@
+	CREATE TABLE [dbo].[Hotels] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [Name]     NVARCHAR (MAX) NOT NULL,
+    [Address]    NVARCHAR (MAX) NOT NULL,
+    [Latitude] NUMERIC(10, 8) NOT NULL,
+    [Longitude]    NUMERIC(10, 8) NOT NULL,
+    [Phone_Number]   NVARCHAR (MAX) NOT NULL,
+	[Manager_Id] NVARCHAR (128) not null,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+	foreign key(Manager_Id) references AspNetUsers(id)	
+);
+
+CREATE TABLE [dbo].[Rooms] (
+    [Id]            INT            IDENTITY (1, 1) NOT NULL,
+    [RoomNumber]    NVARCHAR (MAX) NOT NULL,
+    [Type]          NVARCHAR (MAX) NOT NULL,
+    [PricePerNight] INT            NOT NULL,
+    [Rating]        INT            NOT NULL,
+    [HotelId]       INT            NOT NULL,
+	[Path] VARCHAR(100) ,
+	[Status]  NVARCHAR(50) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([HotelId]) REFERENCES [dbo].[Hotels] ([Id])
+);
+
+CREATE TABLE Booking(
+	booking_id int identity(1,1) not null,
+	from_date nvarchar(max) not null,
+	to_date nvarchar(max) not null,
+	no_of_night_stay int not null,
+	no_of_adults int not null,
+	no_of_children int not null,
+	price int not null,
+	book_status nvarchar not null,
+	hotel_id int not null ,
+	customer_id nvarchar(128) not null,
+	primary key (booking_id),
+	foreign key (hotel_id) references Hotels(id),
+	foreign key(customer_id) references AspNetUsers(id)
+);
+
+
+ALTER TABLE booking
+	ALTER COLUMN from_date nvarchar(128);
+	
+ALTER TABLE booking
+	ALTER COLUMN to_date nvarchar(128);
+	
+ALTER TABLE booking
+	ALTER COLUMN book_status nvarchar(128);
+	
+ALTER TABLE hotels
+	ALTER COLUMN latitude NUMERIC(10, 8) not null;
+	
+ALTER TABLE hotels
+	ALTER COLUMN longitude NUMERIC(10, 8) not null;
+
+Hotel:
+nikalya: dcc08b95-5f53-48d6-af16-f530b2034004
+arun: be9f33c2-7fc9-4a26-b997-e3241f8a91c8
+Insert into Hotels(name, address, latitude, longitude,phone_number,manager_id) values('Pan Pacific Melbourne','2 Convention Centre Pl, South Wharf VIC 3006',CAST(-37.824836730957 AS Decimal(10, 8)),CAST(144.951126098633 AS Decimal(11, 8)),'(03) 9027 2000','dcc08b95-5f53-48d6-af16-f530b2034004');
+Insert into Hotels(name, address, latitude, longitude,phone_number,manager_id) values('Crown Promenade Melbourne','8 Whiteman St, Southbank VIC 3006',CAST(-37.8236465454102 AS Decimal(10, 8)),CAST(144.960098266602 AS Decimal(11, 8)), '(03) 9292 8888','be9f33c2-7fc9-4a26-b997-e3241f8a91c8');
+Insert into Hotels(name, address, latitude, longitude,phone_number,manager_id) values('Mantra On Russell','222 Russell St, Melbourne VIC 3000',CAST(-37.8113174438477 AS Decimal(10, 8)),CAST(144.967697143555 AS Decimal(11, 8)),'(03) 9915 2500','dcc08b95-5f53-48d6-af16-f530b2034004' );
+Insert into Hotels(name, address, latitude, longitude,phone_number,manager_id) values('Rendezvous Hotel Melbourne','328 Flinders St, Melbourne VIC 3000',CAST(-37.8183937072754 AS Decimal(10, 8)),CAST(144.963790893555 AS Decimal(11, 8)),'(03) 9250 1888','be9f33c2-7fc9-4a26-b997-e3241f8a91c8');
+Insert into Hotels(name, address, latitude, longitude,phone_number,manager_id) values('Crowne Plaza Melbourne','1-5 Spencer St, Melbourne VIC 3008',CAST(-37.8225631713867 AS Decimal(10, 8)),CAST(144.955001831055 AS Decimal(11, 8)),'(03) 9648 2777','dcc08b95-5f53-48d6-af16-f530b2034004');
+	
+Rooms:
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('111', 'Super Deluxe', 55, 4, 8);
+
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('222', 'Luxury', 65, 5, 9);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('333', 'Premium', 80, 5, 10);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('444', 'Double',  40,5, 11);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('111', 'Super Deluxe', 50, 4, 12);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('222', 'Luxury', 60, 5, 8);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('333', 'Premium', 75, 5, 9);
+Insert into ROOMS(roomNumber, type, pricepernight, rating, hotelid) values ('444', 'Double',  35,5, 10);

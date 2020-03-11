@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Task_02.Models.Booking>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Booking Detail</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.from_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.to_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.no_of_night_stay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.no_of_adults)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.no_of_children)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.book_status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Hotel.Name)
+            </th>
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.AspNetUser.Email)*@
+                        Customer Email Address
+                    </th>
+
+                }
+            }
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin"))
+                {
+
+                    <th>
+                        Modify
+                    </th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.from_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.to_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.no_of_night_stay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.no_of_adults)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.no_of_children)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.book_status)
+                </td>
+
+                <td>
+                    @*Hotel @Html.DisplayFor(modelItem => item.Hotel.Rooms.ge,<br />*@
+                    Hotel @Html.DisplayFor(modelItem => item.Hotel.Name),<br />
+                    @Html.DisplayFor(modelItem => item.Hotel.Address), <br />
+
+                </td>
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+            <td>
+                @*@Html.DisplayFor(modelItem => item.customer_id)*@
+                @Html.DisplayFor(modelItem => item.AspNetUser.Email)
+            </td>
+
+                    }
+                }
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.booking_id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.booking_id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.booking_id })
+                        </td>
+                    }
+                }
+
+            </tr>
+        }
+    </tbody>
+
+</table>
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Admin") || User.IsInRole("Public"))
+    {
+
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <img src="@Url.Action("CharterHelp")" alt="Chart" />
+            </div>
+            <div class="col-md-6">
+                <br /><br />
+                <label>Double</label>
+                <p>Number of Adults allowed : 2 </p>
+                <br />
+                <label>Super Deluxe/Luxury</label>
+                <p>Number of Adults allowed : 5 </p>
+                <br />
+                <label>Premium</label>
+                <p>Number of Adults allowed : 7 </p>
+            </div>
+        </div>
+    }
+}
+@section Scripts{
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js");
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js");
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+

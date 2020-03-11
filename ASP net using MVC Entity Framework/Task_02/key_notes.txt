@@ -1,0 +1,47 @@
+myMessage.AddAttachment(Server.MapPath(@"~\img\logo.png"))
+
+PDF:
+https://daveaglick.com/posts/using-aspnet-mvc-and-razor-to-generate-pdf-files
+https://www.syncfusion.com/kb/9183/how-to-create-a-pdf-file-in-asp-net-mvc
+
+
+send email with attachment:
+https://github.com/sendgrid/sendgrid-csharp/blob/master/USE_CASES.md#attachments
+https://stackoverflow.com/questions/37945281/sending-an-email-with-attachment-using-sendgrid
+https://stackoverflow.com/questions/12562687/asp-net-mvc-httppostedfilebase-is-null
+https://stackoverflow.com/questions/27143299/null-reference-exception-while-uploading-a-file-in-mvc-5
+https://docs.microsoft.com/en-us/azure/sendgrid-dotnet-how-to-send-email
+
+Data Dictionary sample:
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.ytimg.com%2Fvi%2FMdMsjxT-EoU%2Fmaxresdefault.jpg&imgrefurl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DMdMsjxT-EoU&docid=YF1EMFmxmwbn2M&tbnid=91G-vJdQF4XIOM%3A&vet=10ahUKEwij1Le_yqLlAhVIbysKHaTRBCIQMwhvKAQwBA..i&w=1280&h=720&bih=657&biw=1366&q=data%20dictionary%20example&ved=0ahUKEwij1Le_yqLlAhVIbysKHaTRBCIQMwhvKAQwBA&iact=mrc&uact=8
+
+from and to date has to be validated
+
+check
+	PUBLIC USER can able to update his profile
+
+	
+Admin:
+	Can send email to all registered users
+	can also send emails to the n users
+
+Public:
+	can book hotel
+	can view their respective bookings
+	
+	
+Manager:
+	can view respective customer bookings
+	can send emails to the n users
+
+Chart reference:
+https://docs.microsoft.com/en-us/aspnet/web-pages/overview/data/7-displaying-data-in-a-chart
+https://www.c-sharpcorner.com/UploadFile/2b481f/chart-helper-in-Asp-Net-web-api/
+
+Rating:
+http://www.dotnetfunda.com/articles/show/3438/star-rating-system-in-aspnet-mvc
+https://codeburst.io/a-simple-star-rating-system-using-vanilla-js-css-and-html-caf1b3e4d9f1
+	
+Can we use send grid to send email or should we use 3rd party toollike SendGrid
+What is bulk email
+is that ok to hace the secret key of Google API for external authentication

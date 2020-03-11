@@ -1,0 +1,84 @@
+﻿body {
+    background-color:darkgray;
+}
+
+.ma-header {
+    background: #211f17;
+    display: block;
+    padding: 20px;
+}
+
+.ma-logo {
+    align-content: center;
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+}
+
+/* Slider Content*/
+.ma-imageslider {
+    position: relative;
+}
+
+
+.ma-slider {
+    position: relative;
+}
+
+.ma-sliderimg {
+    width: 30%;
+    display:block;
+    height:inherit;
+   
+}
+.ma-sliderimg1 {
+    align-content: center;
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+}
+
+.ma-slidertext {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    color: #fff;
+}
+
+.boldSlide {
+    padding-bottom: 5px;
+    font-size: 3vw;
+    font-weight: 900;
+}
+
+.sizesimple {
+    font-size: 2.5vw;
+}
+
+.left, .right {
+    position: absolute;
+    width: 1.5%;
+    max-width: 1.5%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    padding-left: 2%;
+    padding-right: 2%;
+    opacity: 0;
+}
+
+.left:hover, .right:hover {
+    opacity: 1;
+    -webkit-transition: opacity .25s ease-in-out .0s;
+    transition: opacity .25s ease-in-out .0s;
+}
+
+.left {
+    top: 10%;
+    left: 1%;
+}
+
+.right {
+    top: 10%;
+    right: 1%;
+}
+

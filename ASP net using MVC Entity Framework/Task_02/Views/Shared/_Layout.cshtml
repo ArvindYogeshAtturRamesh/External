@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Online Hotel Booking Application</title>
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script type="text/javascript" src="dist/demo.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+    @* This is for the mapbox map. *@
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css' rel='stylesheet' />
+    @*This is used for the Geocoding Mapbox API*@
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css' type='text/css' />
+
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Hotel Booking", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
+                            <li>@Html.ActionLink("Rooms", "Index", "Rooms")</li>
+                            <li>@Html.ActionLink("Bookings", "Index", "Bookings")</li>
+                            <li>@Html.ActionLink("Send Bulk Mail", "Admin_Send_Email", "AdminEmail")</li>
+                            <li>@Html.ActionLink("Send Mail", "Manager_Send_Email", "AdminEmail")</li>
+
+                        }
+
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Manager"))
+                        {
+
+                            <li>@Html.ActionLink("Customer Bookings", "Index", "Bookings")</li>
+                            <li>@Html.ActionLink("Send Mail", "Manager_Send_Email", "AdminEmail")</li>
+
+                        }
+
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Public"))
+                        {
+
+                            <li>@Html.ActionLink("My Bookings", "Index", "Bookings")</li>
+
+                        }
+
+                    }
+
+                    <li>@Html.ActionLink("Book Now", "SearchHotel", "Bookings")</li>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Online Hotel Booking Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

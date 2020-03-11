@@ -1,0 +1,191 @@
+Basic Changes Booking.cs:
+  public class Book_Hotel
+    {
+        public Booking booking { get; set; }
+        public Hotel hotel { get; set; }
+        public Room room { get; set; }
+    }
+	
+	 public int? hotel_id { get; set; }
+	 public string priceInAud { get { return String.Format("{0} AUD", this.price); } set { } }
+
+----------------------------------------------------------------------------------------------------	
+
+ In BookingsController:
+ 
+ public ActionResult EmailConfirmation(Book_Hotel book_hotel) method must be checked - Add Hotel Name in "String contents"
+ 
+----------------------------------------------------------------------------------------------------	
+ Booking.cs
+ Change from_date and to_date to string datatype
+  public int? hotel_id { get; set; }
+  public string priceInAud { get { return String.Format("{0} AUD", this.price); } set { } }
+  
+  public class Book_Hotel
+    {
+        public Booking booking { get; set; }
+        public Hotel hotel { get; set; }
+		public Room room{get;set;}
+    }
+----------------------------------------------------------------------------------------------------	
+In HotelsController: Only one change was there
+
+   [Authorize]
+        public ActionResult Index()
+        {
+            //var userId = User.Identity.GetUserId();
+            //var hotels = db.Hotels.Where(h =>h.UserId == userId).ToList();
+            //return View(hotels);
+            return View(db.Hotels.ToList());
+        }
+
+----------------------------------------------------------------------------------------------------
+get Email id from AspNetUser
+ var context = new ApplicationDbContext();
+                var users = context.Users.ToList();               
+                foreach(var user in users)
+                {
+                    if(user.Id == userId)
+                    {
+                        toEmail = user.Email;
+                    }
+                }
+-----------------------------------------------------------------------------------------------	
+
+        [HttpPost]
+        public ActionResult DisplayHotelWithSearchInfo(Booking book)
+        {
+            Book_Hotel book_hotel = new Book_Hotel();
+            book_hotel.booking = book;
+            TempData["DisplaySearchInfo"] = book_hotel;
+            return Redirect("/Bookings/DisplayHotel");
+
+        }
+------------------------------------------------------------------------------------------------------
+ string actualFromDate = book.from_date;
+            DateTime fromDate = DateTime.ParseExact(actualFromDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+            string actualToDate = book.to_date;
+            DateTime toDate = DateTime.ParseExact(actualToDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+            if (toDate > fromDate)
+            {
+                TimeSpan difference = toDate - fromDate;
+                int days = (int)difference.TotalDays;
+                book.no_of_night_stay = days;
+            }
+            else if (toDate == fromDate)
+            {
+                book.no_of_night_stay = 1;
+            }
+
+------------------------------------------------------------------------------------------------------
+ public List<Room> getSpecificRoomDetails(List<Room> room, int no_of_adults)
+        {
+            
+            List<Room> specificRoom = new List<Room>();
+
+            if(no_of_adults > 0 && no_of_adults <= 2)
+            {
+                foreach (Room eachRoom in room)
+                {
+                    if (eachRoom.Type == "Double")
+                    {
+                        specificRoom.Add(eachRoom);
+                    }
+                }
+             }
+            else if(no_of_adults > 2 && no_of_adults <= 5)
+            {
+                foreach (Room eachRoom in room)
+                {
+                    if (eachRoom.Type == "Super Deluxe" || eachRoom.Type == "Luxury")
+                    {
+                        specificRoom.Add(eachRoom);
+                    }
+                }
+            }
+            else if (no_of_adults > 5 && no_of_adults <= 7)
+            {
+                foreach (Room eachRoom in room)
+                {
+                    if (eachRoom.Type == "Premium")
+                    {
+                        specificRoom.Add(eachRoom);
+                    }
+                }
+            }
+
+            return specificRoom;
+        }
+---------------------------------------------------------------------------------------------------------------
+  public ActionResult DisplayHotel()
+        {
+            
+            List<Room> room = db.Rooms.ToList();
+            List<Room> specificRoom = new List<Room>();
+            Book_Hotel book1 = new Book_Hotel();
+            book1 = TempData["DisplaySearchInfo"] as Book_Hotel;
+            if(book1.booking.no_of_adults <= 2)
+            {
+                foreach(Room eachRoom in room){
+                    if(eachRoom.Type == "Double")
+                    {
+                        specificRoom.Add(eachRoom);
+                    }
+
+                }
+            }
+
+            TempData["BookHotelRoom"] = book1;
+
+            return View(specificRoom.ToList());
+            //return View(db.Hotels.ToList());
+
+        }
+
+---------------------------------------------------------------------------------------------------
+BookinController
+  public ActionResult BookHotel(int? id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+          
+            Book_Hotel book = new Book_Hotel();
+            book = TempData["DisplaySearchInfo"] as Book_Hotel;
+            book.hotel = db.Hotels.Find(id);
+
+            book.booking.price = 5000; //Need to Calculate the price
+            book.booking.book_status = "Confirmed";
+            book.booking.hotel_id = id;
+            if(book.booking.customer_id == null)
+            {
+                book.booking.customer_id = "dcc08b95-5f53-48d6-af16-f530b2034004";
+            }
+
+            if (book.hotel == null)
+            {
+                return HttpNotFound();
+            }
+            TempData["BookAndHotelDetail"] = book;
+            return View(book);
+        }
+        [HttpPost]
+        public ActionResult BookHotel(Book_Hotel book_hotel)
+        {          
+            if (ModelState.IsValid)
+            {
+                book_hotel = TempData["BookAndHotelDetail"] as Book_Hotel;
+                Booking current_book = new Booking();
+                current_book = book_hotel.booking;
+
+                db.Bookings.Add(current_book);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(book_hotel);
+            
+         }

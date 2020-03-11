@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Task_02.Models.Room>
+@{
+    ViewBag.Title = "DisplayHotel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Display Hotel</h2>
+<div id="map" style="height:300px"></div>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                Hotel
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerNight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Hotel Latitude
+            </th>
+            <th>
+                Hotel Longitude
+            </th>
+            <th>
+                Status
+            </th>
+
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr class="coordinates">
+            <td class="description">
+                Hotel @Html.DisplayFor(modelItem => item.Hotel.Name),<br />
+                @Html.DisplayFor(modelItem => item.Hotel.Address)<br />
+                @Html.DisplayFor(modelItem => item.Hotel.Phone_Number)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerNight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <img class="img-thumbnail" src="@Url.Content("~/Uploads/"+item.Path)" />
+            </td>
+
+            <td class="latitude">
+                @Html.DisplayFor(modelItem => item.Hotel.Latitude)
+            </td>
+            <td class="longitude">
+                @Html.DisplayFor(modelItem => item.Hotel.Longitude)
+            </td>
+
+            @if (item.Status == "Available")
+            {
+                <td>
+                    @Html.ActionLink("Book Now", "BookHotel", new { id = item.HotelId, roomId = item.Id })
+
+                </td>
+            }
+            else
+            {
+                <td>
+                   <label > Booked </label>
+
+                </td>
+            }
+
+
+
+        </tr>
+        }
+    </tbody>
+
+</table>
+@section Scripts{
+    
+    
+    @Scripts.Render("~/Scripts/location.js");
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js");
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js");
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+

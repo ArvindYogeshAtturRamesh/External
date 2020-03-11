@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> Welcome to Trilago</title>
+    @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/MyScripts/slick.js"></script>
+    <script src="~/Scripts/MyScripts/jquery.scrollUp.js"></script>*@
+
+
+    <link href="~/Content/MyCss/main.css" rel="stylesheet" />
+    <link href="~/Content/MyCss/slick.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="ma-header">
+        <img class="ma-logo" src="~/Content/Images/book.png" alt="Majestic Hotel">
+
+    </header>
+    <section class="ma-imageslider">
+        <div class="single slider">
+            <div>
+                <div class="ma-slider">
+                    <img class=" ma-sliderimg" src="~/Content/Images/beach_resort.jpg" alt="Hotel One" />
+                    <div class="ma-slidertext">
+                        <p class="boldSlide">Experience the Beauty</p>
+                        <p class="sizesimple">Pleasant and Peace</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="ma-slider">
+                   
+                        @*<img class="ma-logo" src="~/Content/Images/book.png" alt="Majestic Hotel">*@
+                        
+                    <img class=" ma-sliderimg" src="~/Content/Images/rooms_two.jpg" alt="rooms_two" />
+                        <div class="ma-slidertext">
+                            <p class="boldSlide">Experience </p>
+                            <p class="sizesimple">Premium rooms</p>
+                        </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="ma-slider">
+                    <img class=" ma-sliderimg" src="~/Content/Images/room.jpg" alt="room" />
+                    <div class="ma-slidertext">
+                        <p class="boldSlide">Experience</p>
+                        <p class="sizesimple">Luxurious room</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="ma-slider">
+                    <img class=" ma-sliderimg" src="~/Content/Images/deluxe2.jpg" alt="swimming" />
+                    <div class="ma-slidertext">
+                        <p class="boldSlide">Experience</p>
+                        <p class="sizesimple">Super Deluxe</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <img src="~/Content/Images/back.png" class="left">
+        <img src="~/Content/Images/next.png" class="right">
+    </section>
+
+   
+</body>
+
+</html>
