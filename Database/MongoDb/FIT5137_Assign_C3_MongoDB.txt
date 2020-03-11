@@ -1,0 +1,724 @@
+EMBEDDED MODEL FOR creating listing_host collection:
+
+	db.listings.aggregate([
+			{
+	   $lookup:
+		 {
+		   from: "hosts",
+		   localField: "host_id",
+		   foreignField: "host_id",
+		   as: "hosts_docs"
+		 }
+		},
+		{
+			$project:{
+				"host_id":0
+			}
+		},
+		
+	]).toArray();
+
+Import listing_host json in mongoDB:
+	mongoimport --db FIT5137_Assign_C3 --collection listing_host --file F:\listing_host.json --jsonArray
+
+INDEX:
+	A) CREATED COMPOUND INDEX ON listing_host collection TO HANDLE FASTER QUERY PROCESSING FOR QUERY 4 & 10	
+			db.listing_host.createIndex({"id":1, "price":1});
+			
+			REASON:
+				This index is created to sort the listings id first and using listing id, the respective price will be sorted.
+				This helps in Embedded model of Query 4 & 10 to sort the price.
+		
+		
+	B) CREATED SIMPLE INDEX FOR LISTINGS AND HOSTS COLLECTION:
+			db.listings.createIndex({"host_id":1})
+			db.hosts.createIndex({"host_id":1})
+			
+			REASON:
+				Index is created for listing and host vcollection with "host_id". 
+				This helps in faster query processing on many queries where reference model is used with "host_id" as the key.
+			
+
+
+
+
+1) How many accommodations were rented in December 2018?
+	
+	Embedded Model:
+	db.listing_host.find({"last_review" : { 
+			$gte: ISODate("2018-12-01T00:00:00.000Z"),         
+			$lte: ISODate("2018-12-31T00:00:00.000Z") }}).count();
+		
+	REFERENCE MODEL:
+		db.listings.aggregate([
+		{
+			$match:{
+				"last_review" : { 
+        $gte: ISODate("2018-12-01T00:00:00.000Z"),         
+		$lte: ISODate("2018-12-31T00:00:00.000Z") }
+			}
+		},
+		{
+			$group:{
+				_id:null,
+				count:{$sum:1}
+			}
+		}]);
+		
+2) What is the average price for the accommodations in the Port Phillip neighbourhood?
+
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$match:{"neighbourhood": "Port Phillip"}
+		},
+		{
+			$project:{"neighbourhood":1, "price":1}
+		},
+		{
+			$group: {
+				_id:"$neighbourhood",
+				avgPrice: {$avg: "$price"}	
+				}
+		}	
+	]);
+	
+	REFERENCE Model:
+	db.listings.aggregate([
+		{
+			$match:{"neighbourhood": "Port Phillip"}
+		},
+		{
+		$project:{"neighbourhood":1, "price":1}
+		},
+		{
+		$group: {
+			_id:"$neighbourhood",
+			avgPrice: {$avg: "$price"}	
+			}
+	}]);
+
+
+3)	What are the top 10 most popular neighbourhoods based on the average reviews per month?
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$group:{
+				_id: "$neighbourhood",
+				avgReviewsPerMonth:{$avg: "$reviews_per_month"}
+			}
+		}, 	
+		{
+			$sort:{
+				avgReviewsPerMonth:-1
+			}
+		},
+		{
+			$limit: 10
+		}
+	]);
+	
+	REFERENCE Model:
+	db.listings.aggregate([
+		{
+			$lookup:
+			 {
+			   from: "hosts",
+			   localField: "host_id",
+			   foreignField: "host_id",
+			   as: "hosts_docs"
+			 }
+	},
+	{
+		$group:{
+			_id: "$neighbourhood",
+			avgReviewsPerMonth:{$avg: "$reviews_per_month"}
+			}
+		},
+		{
+			$sort:{
+				avgReviewsPerMonth:-1
+			}
+		},
+		{
+			$limit: 10
+		}
+	]);
+
+	
+4) What is the range of number of houses rented (the lowest to the highest number) in Melbourne?
+
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$match: {
+				"street": /^Melbourne/
+			}
+		},
+		{
+			$project:{
+				"street":1,
+				"price":1
+			}
+		},
+		{
+			$group:{
+				_id: null,
+				"street": {$first: "$street"},
+				min_price: {$min: "$price"},
+				max_price: {$max : "$price"}}}]).pretty()	
+
+	
+	REFERENCE Model:
+	db.listings.aggregate([
+	{
+		$match: {
+			"street": /^Melbourne/
+		}
+	},
+	{
+		$project:{
+			"street":1,
+			"price":1
+		}
+	},
+		{
+			$group:{
+				_id: null,
+				"street": {$first: "$street"},
+				min_price: {$min: "$price"},
+				max_price: {$max : "$price"}}}]).pretty();
+
+5) What is the most popular room type?
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+	{
+		$group:{
+			_id: "$room_type",
+			count: {$sum:1}
+		}
+	},
+	{
+		$sort: {
+			count: -1
+		}
+	},
+	{
+		$limit:1
+	}
+	]);
+	
+	REFERENCE Model:
+	db.listings.aggregate([
+		{
+			$group:{
+				_id: "$room_type",
+				count: {$sum:1}
+			}
+		},
+		{
+			$sort: {
+				count: -1
+			}
+		},
+		{
+			$limit:1
+		}
+		]);
+
+
+
+
+6) Where are the top 5 most expensive accommodations?
+
+	Embedded Model:
+		db.listing_host.aggregate([
+		{
+			$project: {
+				"street":1,
+				"room_type":1,
+				"price":1,
+				"_id":0
+			}
+		},
+		{
+			$sort: {
+				"price":-1,			
+			}
+		},
+		{
+			$limit: 5
+		}
+	]);
+	REFERENCE Model;
+	db.listings.aggregate([
+	{
+		$project: {
+			"street":1,
+			"room_type":1,
+			"price":1,
+			"_id":0
+		}
+	},
+	{
+		$sort: {
+			"price":-1,			
+		}
+	},
+	{
+		$limit: 5
+	}
+	]);
+	
+
+7)	Display all listings with host name “Eleni”.
+
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$match:{
+				"hosts_docs.host_name":"Eleni"
+			}
+		}
+	]).pretty();
+	
+	USED REFERENCE MODEL USING host_id as a key to join
+		db.listings.aggregate([
+			{
+		   $lookup:
+			 {
+			   from: "hosts",
+			   localField: "host_id",
+			   foreignField: "host_id",
+			   as: "hosts_docs"
+			 }
+	},
+		{
+			$match:{
+				"hosts_docs.host_name":"Eleni"
+			}
+		}
+	]).pretty();
+	
+	
+	
+8)	Display the entire homes that the host can respond within a few hours.
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+	{
+		$match:{
+			"hosts_docs.host_response_time":"within a few hours"
+		}
+	},
+	{
+		$project:{
+			"name":1, "room_type":1, "amenities":1, "hosts_docs.host_response_time":1
+		}
+	}
+	]).pretty();
+	
+	USED REFERENCE MODEL USING host_id as a key to join
+	db.listings.aggregate([
+	{
+		$lookup:
+		 {
+		   from: "hosts",
+		   localField: "host_id",
+		   foreignField: "host_id",
+		   as: "hosts_docs"
+		 }
+	},
+	{
+		$match:{
+			"hosts_docs.host_response_time":"within a few hours"
+		}
+	},
+	{
+		$project:{
+			"name":1, "room_type":1, "amenities":1, "hosts_docs.host_response_time":1
+		}
+	}
+]);
+	
+	
+
+
+9) Display the listing belongs to “Colin” with internet and gym access.
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$match:{"hosts_docs.host_name":"Colin",
+				$and:[{"amenities":/Internet/, "amenities":/Gym/}]}
+		},
+		{
+			$project:{
+				"hosts_docs.host_name":1,"name":1, "room_type":1, "amenities":1
+			}}
+		]).pretty();
+	
+	
+	USED REFERENCE MODEL USING host_id as a key to join
+
+	db.listings.aggregate([
+			{
+	   $lookup:
+		 {
+		   from: "hosts",
+		   localField: "host_id",
+		   foreignField: "host_id",
+		   as: "hosts_docs"
+		 }
+		},
+		{
+			$match:{
+			"hosts_docs.host_name":"Colin",
+			$and:[{"amenities":/Internet/, "amenities":/Gym/}]}
+		},
+		{
+			$project:{
+				"name":1, "room_type":1, "amenities":1
+			}}]);
+		
+		
+	
+10) What is the price and room type for the listings in Clayton and the name contains “Beautiful”?
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+	{
+		$match: {
+			"street": /^Clayton/,
+			"name":/Beautiful/
+		}
+	},
+	{
+		$project:{
+			"price":1,
+			"room_type":1,
+			"name":1,
+			"street":1
+			
+		}
+	},	
+	{
+		$sort:{
+			"price":1
+		}
+	}
+]);
+
+	REFERENCE ModeL:
+	db.listings.aggregate([
+	{
+		$match: {
+			"street": /^Clayton/,
+			"name":/Beautiful/
+		}
+	},
+	{
+		$project:{
+			"price":1,
+			"room_type":1,
+			"name":1,
+			"street":1
+			
+		}
+	},	
+	{
+		$sort:{
+			"price":1
+		}
+	}
+	]);
+
+11) For each listing, display the listing’s name, address and neighbourhood in 
+	the following format: “Monash Beautiful House, Clayton, VIC, 3800, Clayton” and sort the list in alphabetical order.
+	
+	Embedded ModeL:
+	db.listing_host.aggregate([
+	{ 
+		$addFields: {
+			convertedZipCode: { $toString: "$zipcode" }
+		}
+   },
+	{
+		$project:{ 
+		listing_house_address:{
+			$concat:["$name",", ","$street",", ","$convertedZipCode",",","$neighbourhood"]
+			} 
+		}  
+	} ,
+	{
+		$sort: {
+			listing_house_address : 1
+		}
+	}
+	]).pretty();
+
+	REFERENCE ModeL:
+	db.listings.aggregate([
+	{ 
+		$addFields: {
+			convertedZipCode: { $toString: "$zipcode" }
+		}
+   },
+	{
+		$project:{ 
+		listing_house_address:{
+			$concat:["$name",", ","$street",", ","$convertedZipCode",",","$neighbourhood"]
+			} 
+		}  
+	} ,
+	{
+		$sort: {
+			listing_house_address : 1
+		}
+	}
+	]);
+
+12) Which listing is available for the longest number of days? 
+	Add the attribute for report generation time and store the current time for when your output is generated.
+	
+	Embedded Model:
+		db.listing_host.aggregate([	
+		   {
+				$group:{
+					_id:"$id",
+					long_no_of_days: {$max:"$availability_365"}
+					
+				}
+			},
+			{
+				$sort:{
+					long_no_of_days : -1
+				}
+			},
+			{
+				$limit : 13
+			},
+			{
+			 $addFields: {
+			   report_time: new Date()
+			}
+		   }
+		]);
+	Reference Model:
+	db.listings.aggregate([
+	{
+				$group:{
+					_id:"$id",
+					long_no_of_days: {$max:"$availability_365"}
+					
+				}
+			},
+			{
+				$sort:{
+					long_no_of_days : -1
+				}
+			},
+			{
+				$limit : 13
+			},
+			{
+			 $addFields: {
+			   report_time: new Date()
+			}
+		   }
+		]);
+
+13)	Using a single query, list the unique neighbourhoods with the price per night greater than $50. 
+	Your list should display only the neighbourhoods and prices, and 
+	be sorted in reverse alphabetical order of neighbourhood names.
+	
+	Embedded ModeL:
+	db.listing_host.aggregate([
+		{
+			$match:{
+				"minimum_nights":1,
+				"price": {$gt : 50}
+			}
+		},	
+		
+		{
+			$group:{
+				_id: "$neighbourhood",
+				"price":{$first:"$price"},
+				"minimum_nights":{$first:"$minimum_nights"}
+			}
+		},			
+		{
+			$sort:{
+				_id : -1
+			}
+		}
+	]).pretty();
+	
+	REFERENCE ModeL:
+	db.listings.aggregate([
+		{
+				$match:{
+					"minimum_nights":1,
+					"price": {$gt : 50}
+				}
+			},	
+			
+			{
+				$group:{
+					_id: "$neighbourhood",
+					"price":{$first:"$price"},
+					"minimum_nights":{$first:"$minimum_nights"}
+				}
+			},			
+			{
+				$sort:{
+					_id : -1
+				}
+			}
+		]);
+14)
+	For each host, find the total number of verification methods and store the results as “number of verification methods”.
+	The output should be sorted according to descending order for number of verification method and 
+	it should show only host id, host name and their number of verification methods.
+	
+	Embedded Model : 
+		db.listing_host.aggregate([
+		{
+			$unwind: "$hosts_docs"
+		},
+		{$group:{
+				_id: "$hosts_docs.host_id",
+				wind_host_name: {$first: "$hosts_docs.host_name"},
+				wind_host_verification: {$first: "$hosts_docs.host_verifications"},
+				 }},
+		{
+		$project:{
+			"_id" : 1,
+			"wind_host_name" :1,
+			"No_of_verification_methods": {$size: "$wind_host_verification" }
+		}
+		},
+		{$sort:{"No_of_verification_methods" : -1}}
+		
+		])
+
+	
+	REFERENCE ModeL:
+	db.hosts.aggregate([
+	{
+		$unwind: "$host_verifications"
+	},
+	{
+		$group:{
+			_id: "$host_id",
+			No_of_verification_methods:{$sum:1},
+			"host_name":{$first: "$host_name"}
+		}
+	},
+	{
+		$sort:{
+				"No_of_verification_methods":-1
+			}
+	}
+	])
+
+ADDITIONAL QUERIES FOR MONGODB:
+1) Display listing_id with same day and year of the last review in descending order of the year.
+	
+	Embedded Model:
+	db.listing_host.aggregate([
+	{
+		$group:{
+			_id:{day:{$dayOfYear:"$last_review"}, year:{$year: "$last_review"}},
+			list_items: {$addToSet: "$id"}
+		}
+	},
+	{
+		$sort:{
+			"_id.year" : -1
+		}
+	}
+]);
+	
+	Reference Model:
+	db.listings.aggregate([
+	{
+		$lookup:
+			 {
+			   from: "hosts",
+			   localField: "host_id",
+			   foreignField: "host_id",
+			   as: "hosts_docs"
+			 }
+	},{
+		$group:{
+			_id:{day:{$dayOfYear:"$last_review"}, year:{$year: "$last_review"}},
+			list_items: {$addToSet: "$id"}
+		}
+	},
+	{
+		$sort:{
+			"_id.year" : -1
+		}
+	}
+]);
+
+2) Display latitude and longitude of listings with listing id and name
+	Embedded Model:
+	db.listing_host.aggregate([
+		{
+			$group:{
+				_id: {
+					"latitude": "$latitude",
+					"longitude": "$longitude"
+				},
+				"id": {$first : "$id"},
+				"name" : {$first: "$name"}
+			}
+		}
+])
+
+	Reference Model:
+	db.listings.aggregate([
+		{
+			$group:{
+				_id: {
+					"latitude": "$latitude",
+					"longitude": "$longitude"
+				},
+				"id": {$first : "$id"},
+				"name" : {$first: "$name"}
+			}
+		}
+]);
+
+3)	Using isArray operator, count number of verification methods of each host id. Display host id and total number of verification
+methods less than 4 in an ascending order.
+	Reference Model:
+	db.hosts.aggregate([
+		{
+			$project:{
+				"host_id" : 1,
+				no_of_verification_methods: {$cond: {if:  {$isArray: "$host_verifications"}, then: {$size: "$host_verifications"}, else: "NA"}}
+			}
+		},
+		{
+			$match:{
+				"no_of_verification_methods" : {$lt : 4}
+			}
+		},
+		{
+			$sort: {
+				"no_of_verification_methods" : 1
+			}
+		}
+	]).pretty();
+
+
+
+
+
+

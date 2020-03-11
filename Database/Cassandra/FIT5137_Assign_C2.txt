@@ -1,0 +1,31 @@
+1. Updating the verification Adam and adding Facebook to his list of existing verifications. 
+db.Host.updateOne({Host_Name:"Adam"},{$push:{Host_Verifications:"facebook"}})
+
+
+2. Insert 5 new hosts with the following details using a single insert command: 
+
+db.Host.insertMany([{"Host_ID":"MONHOS11","Host_Name":"Alison","Host_Verifications":["email","phone","facebook","reviews"],"Host_Since":ISODate("2019-01-09"),"Host_Location":["Caulfield","Victoria","Australia"],"Host_Response_Rate":"within an hour","Host_Is_Superhost":"f"},{"Host_ID":"MONHOS12","Host_Name":"Mike","Host_Verifications":["email","phone"],"Host_Since":ISODate("2019-01-09"),"Host_Location":["Clayton","Victoria","Australia"],"Host_Response_Rate":"within a day","Host_Is_Superhost":"t"},{"Host_ID":"MONHOS13","Host_Name":"Robyn","Host_Verifications":["facebook","reviews"],"Host_Since":ISODate("2019-01-09"),"Host_Location":["Berwick","Victoria","Australia"],"Host_Response_Rate":"within an hour","Host_Is_Superhost":"f"},{"Host_ID":"MONHOS14","Host_Name":"Daniel","Host_Verifications":["email","manual offline","work email"],"Host_Since":ISODate("2019-01-09"),"Host_Location":["Frankston","Victoria","Australia"],"Host_Response_Rate":"within a day","Host_Is_Superhost":"t"},{"Host_ID":"MONHOS15","Host_Name":"Ron","Host_Verifications":"facebook","Host_Since":ISODate("2019-01-09"),"Host_Location":["Caulfield","Victoria","Australia"],"Host_Response_Rate":"within a day","Host_Is_Superhost":"f"}])
+
+
+3. Update a host who responds “within an hour” to a superhost. For this update you may only use the “host response time” and “host is a super host” information. 
+db.Host.updateOne({Host_Response_Rate:"within an hour"},{$set:{Host_Is_Superhost:"t"}})
+
+
+4. Delete all listings with zero availability, taking into account any future addition of data where availability maybe zero. 
+db.Listing.deleteMany({"Availability per 365 days":0})
+
+
+5. Using only the neighbourhood information, change the neighbourhood name of “Monash” to “Monash City”. 
+db.Listing.updateOne({Neighbourhood:"Monash"},{$set:{ Neighbourhood:"Monash City"}})
+
+
+6. Change the satisfied reason to “space” and “price” for review ID “REV11”.
+UPDATE Review SET satisfied_reason = {'space','price'} WHERE Review_ID = 'REV11';
+
+7. Deleting reviews commented by user “500015”.
+CREATE INDEX ON Review(reviewer_id);
+SELECT review_id FROM Review WHERE reviewer_id = 500015;
+DELETE comments from Review WHERE review_id = 'REV15';
+
+
+
