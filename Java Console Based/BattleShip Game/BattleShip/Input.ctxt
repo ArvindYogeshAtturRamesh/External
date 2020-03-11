@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Input
+comment0.text=\r\n\ Input\ class\ is\ a\ basic\ class\ to\ read\ some\ inputs\r\n\r\n\ @author\ ARVIND\ YOGESH\ ATTUR\ RAMESH\r\n\ @version\ 20th\ OCTOBER\ 2018\r\n
+comment1.params=
+comment1.target=Input()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Input\r\n
+comment2.params=
+comment2.target=void\ pressAnyKeyToContinue()
+comment2.text=\r\n\ This\ method\ helps\ to\ continue\ the\ game\ by\ pressing\ the\ ENTER\ key\ \r\n
+numComments=3

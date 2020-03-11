@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=CoordinateGenerator
+comment0.text=\r\n\ CoordinateGenerator\ class\ helps\ to\ generate\ the\ random\ values\ to\ some\ fields\ for\ the\ game.\r\n\r\n\ @author\ ARVIND\ YOGESH\ ATTUR\ RAMESH\r\n\ @version\ 20th\ OCTOBER\ 2018\r\n
+comment1.params=
+comment1.target=CoordinateGenerator()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ CoordinateGenerator\r\n
+comment2.params=min\ max
+comment2.target=int\ generateCoordinates(int,\ int)
+comment2.text=\r\n\ Method\ to\ generate\ random\ numbers\r\n\ @param\ min\ the\ minimum\ value\r\n\ @param\ max\ the\ maximum\ value\r\n\ @return\ the\ random\ number\r\n
+comment3.params=newMinValue
+comment3.target=void\ setMinimumValue(int)
+comment3.text=\r\n\ Sets\ minimum\ valus\r\n\ @param\ newMinValue\r\n
+comment4.params=newMaxValue
+comment4.target=void\ setMaximumValue(int)
+comment4.text=\r\n\ Sets\ maximum\ value\r\n\ @param\ newMaxValue\r\n
+comment5.params=
+comment5.target=int\ getMinimumValue()
+comment5.text=\r\n\ Gets\ minimum\ value\r\n\ @return\r\n
+comment6.params=
+comment6.target=int\ getMaximumValue()
+comment6.text=\r\n\ gets\ maximum\ value\r\n\ @return\r\n
+numComments=7

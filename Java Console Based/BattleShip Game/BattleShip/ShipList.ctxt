@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=ShipList
+comment0.text=\r\n\ ShipList\ class\ act\ as\ an\ intermediate\ class\ between\ Ship\ class\ and\ Game\ class\r\n\ to\ add\ the\ player/computer\ ship\ details\ in\ the\ Array\ List\r\n\ @author\ ARVIND\ YOGESH\ ATTUR\ RAMESH\r\n\ @version\ 20th\ OCTOBER\ 2018\r\n
+comment1.params=
+comment1.target=ShipList()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ ShipList\r\n
+comment2.params=newShips
+comment2.target=void\ setShips(java.util.ArrayList)
+comment2.text=\r\n\ This\ method\ sets\ the\ ship\ details\ in\ the\ Array\ List\r\n\ It\ is\ applicable\ for\ both\ player\ and\ computer\ ship\r\n\ @param\ newShips\ pass\ array\ list\ to\ set\ the\ ship\ details\r\n
+comment3.params=
+comment3.target=java.util.ArrayList\ getShips()
+comment3.text=\r\n\ This\ method\ returns\ the\ ship\ details\ in\ the\ Array\ List\ \r\n\ It\ is\ applicable\ for\ both\ player\ and\ computer\ ship\r\n\ @return\ returns\ the\ array\ list\ of\ the\ player/computer\ ship\r\n
+comment4.params=shipName\ xPos\ yPos\ randomMultipleHitsNeeded
+comment4.target=void\ playerShipDetail(java.lang.String,\ int,\ int,\ int)
+comment4.text=\r\n\ This\ method\ adds\ the\ player\ ship\ detail\ in\ the\ array\ list\r\n\ @param\ shipName\ pass\ players\ current\ ship\ name\r\n\ @param\ xPos\ pass\ ship\ X\ coordinate\r\n\ @param\ yPos\ pass\ ship\ Y\ coordinate\r\n\ @param\ randomMultipleHitsNeeded\ pass\ multiple\ hits\ needed\ value\ for\ the\ particular\ ship\r\n
+comment5.params=shipName\ randomXPosition\ randomYPosition\ randomMultipleHits
+comment5.target=void\ computerShipDetail(java.lang.String,\ int,\ int,\ int)
+comment5.text=\r\n\ \ This\ method\ adds\ the\ computer\ ship\ detail\ in\ the\ array\ list\r\n\ @param\ shipName\ pass\ computers\ current\ ship\ name\ \r\n\ @param\ randomXPosition\ pass\ randomly\ generated\ ship\ X\ coordinate\r\n\ @param\ randomYPosition\ pass\ randomly\ generated\ ship\ Y\ coordinate\r\n\ @param\ randomMultipleHits\ pass\ multiple\ hits\ needed\ value\ for\ the\ particular\ ship\r\n
+numComments=6

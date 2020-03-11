@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=FileIO
+comment0.text=\r\n\ FileIO\ class\ helps\ to\ read\ or\ write\ the\ data\ from\ the\ file.\r\n\r\n\ @author\ ARVIND\ YOGESH\ ATTUR\ RAMESH\r\n\ @version\ 20th\ OCTOBER\ 2018\r\n
+comment1.params=
+comment1.target=FileIO()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ FileIO\r\n
+comment2.params=newFileName
+comment2.target=void\ setFileName(java.lang.String)
+comment2.text=\r\n\ \r\n\ @param\ newFileName\ Sets\ the\ new\ file\ name\ to\ the\ existing\ one\r\n
+comment3.params=
+comment3.target=java.lang.String\ getFileName()
+comment3.text=\r\n\ \r\n\ @return\ returns\ the\ current\ file\ name\r\n
+comment4.params=playerScore\ computerScore
+comment4.target=void\ writeOutput(int,\ int)
+comment4.text=\r\n\ This\ method\ writes\ output\ to\ the\ gameoutcome.txt\ file\r\n\ @param\ playerScore\ pass\ the\ player\ score\r\n\ @param\ computerScore\ pass\ the\ computer\ score\r\n\ @throws\ IOException\ throws\ exception\ in\ other\ case\r\n
+comment5.params=
+comment5.target=java.lang.String[]\ readInputs()
+comment5.text=\r\n\ This\ method\ reads\ input\ from\ the\ file\ called\ gamesettings.txt\r\n\ @return\ returns\ the\ list\ which\ contains\ the\ game\ details\ to\ start\ the\ game\r\n\ @throws\ IOException\ throws\ exception\ in\ other\ case\r\n
+numComments=6

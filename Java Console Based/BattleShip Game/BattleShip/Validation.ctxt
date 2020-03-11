@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Validation
+comment0.text=\r\n\ Validation\ class\ helps\ to\ validate\ the\ input\ values\ read\ from\ the\ user.\r\n\r\n\ @author\ ARINDYOGESH\ ATTUR\ RAMESH\r\n\ @version\ 20th\ OCTOBER\ 2018\r\n
+comment1.params=
+comment1.target=Validation()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Validation\r\n
+comment2.params=paramOne\ minRange\ maxRange
+comment2.target=boolean\ stringLengthWithinRange(java.lang.String,\ int,\ int)
+comment2.text=\r\n\ This\ method\ checks\ whether\ length\ of\ the\ string\ is\ with\ in\ the\ range\r\n\ @param\ paramOne\ pass\ the\ current\ string\r\n\ @param\ minRange\ pass\ the\ minimum\ range\ \ value\r\n\ @param\ maxRange\ pass\ the\ maximum\ range\ value\r\n\ @return\ returns\ true\ if\ length\ of\ the\ string\ is\ with\ in\ the\ range\ else\ false\r\n
+comment3.params=paramOne\ minRange\ maxRange
+comment3.target=boolean\ intLengthWithinRange(int,\ int,\ int)
+comment3.text=\r\n\ Checks\ whether\ the\ integer\ is\ with\ in\ the\ range.\r\n\ @param\ paramOne\ pass\ the\ current\ integer\ value\r\n\ @param\ minRange\ pass\ the\ minimum\ range\ \ value\r\n\ @param\ maxRange\ pass\ the\ maximum\ range\ value\r\n\ @return\ returns\ true\ if\ the\ integer\ is\ with\ in\ the\ range\ else\ false\r\n
+comment4.params=console\ position\ gridWidthHeight
+comment4.target=int\ integerValidation(java.util.Scanner,\ java.lang.String,\ int)
+comment4.text=\r\n\ Validate\ the\ integer\r\n\ @param\ console\ helps\ to\ read\ the\ integer\r\n\ @param\ position\ pass\ name\ of\ the\ ship\ \r\n\ @param\ gridWidthHeight\ pass\ grid\ width\ and\ height\r\n\ @return\r\n
+numComments=5
